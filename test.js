@@ -57,7 +57,7 @@ test('build next app with service worker', () => {
 })
 
 test('build next app with manifest and service worker', () => {
-  const NAME = 'WithSW'
+  const NAME = 'WithBoth'
   const nextConf = withSW(withManifest({
     manifest: {
       name: NAME
