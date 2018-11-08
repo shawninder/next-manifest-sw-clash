@@ -7,7 +7,7 @@ module.exports = (nextConfig = {}) => {
         dev: false
       }
       if (typeof nextConfig.webpack === 'function') {
-        return nextConfig.webpack(config, options);
+        return nextConfig.webpack(config, newOptions);
       }
 
       return config;
