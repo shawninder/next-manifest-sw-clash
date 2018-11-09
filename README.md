@@ -9,7 +9,7 @@ Trying to reproduce an integration problem that prevents one from using both `ne
 
 [test.js](test.js) is an attempt at reproducing the problem programmatically in a test, but in that context everything seems to work.
 
-Yet using `npm start` and inspecting the resulting app reveals that neither the manifest nor the service worker actually make it to "production". The manifest is created in `./static/manifest` (shouldn't it be created in `./.next/static/manifest` instead?) but the one downloaded by the app is different. As for the service-worker, it is also generated, but not requested by the app. The fact that it is created is what makes the test pass, obviating the fact that the test is insufficient...
+Yet using `npm start` and inspecting the resulting app reveals that the service worker never actually makes it to "production". It is also generated, but not requested by the app. The fact that it is created is what makes the test pass, obviating the fact that the test is insufficient...
 
 ## Help Wanted
 
