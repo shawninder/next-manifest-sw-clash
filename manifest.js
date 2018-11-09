@@ -1,4 +1,4 @@
-module.export = {
+module.exports = exports = {
   'short_name': 'clash',
   'name': "Next Manifest-SW clash",
   'description': 'Reproduce a bug to help fix it',
