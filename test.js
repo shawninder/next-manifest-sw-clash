@@ -46,13 +46,18 @@ test('build next app with manifest', () => {
 })
 
 test('build next app with service worker', () => {
-  const NAME = 'WithSW'
   const nextConf = withSW({
 
   })
   return nextBuild.default(cwd, nextConf)
     .then(() => {
-      return access(join(cwd, '.next/service-worker.js'), fs.constants.F_OK)
+      return Promise.all([
+        access(join(cwd, '.next/service-worker.js'), fs.constants.F_OK),
+        read(join(cwd, '.next/main.js'), 'utf8')
+          .then((str) => {
+            expect(str).toEqual(expect.stringContaining('serviceWorker'))
+          })
+      ])
     })
 })
 
@@ -71,7 +76,25 @@ test('build next app with manifest and service worker', () => {
             const manifest = JSON.parse(str)
             expect(manifest.name).toBe(NAME)
           }),
-        access(join(cwd, '.next/service-worker.js'), fs.constants.F_OK)
+        access(join(cwd, '.next/service-worker.js'), fs.constants.F_OK),
+        read(join(cwd, '.next/main.js'), 'utf8')
+          .then((str) => {
+            expect(str).toEqual(expect.stringContaining('serviceWorker'))
+          }),
+        read(join(cwd, '.next/build-manifest.json'), 'utf8')
+          .then((str) => {
+            const obj = JSON.parse(str)
+            const mainPath = obj.pages['/'].filter((item) => {
+              return item.indexOf('static/runtime/main-') === 0 &&
+                item.indexOf('.js') === item.length - 3
+            })[0]
+            console.log('mainPath', mainPath)
+            expect(mainPath).toEqual(expect.stringContaining('static/runtime/main-'))
+            return read(join(cwd, '.next', mainPath), 'utf8')
+          })
+          .then((str) => {
+            expect(str).toEqual(expect.stringContaining('serviceWorkder'))
+          })
       ])
     })
 })

@@ -7,13 +7,15 @@ Trying to reproduce an integration problem that prevents one from using both `ne
 
 ## Current Status
 
-[test.js](test.js) is an attempt at reproducing the problem programmatically in a test, but in that context everything seems to work.
+[test.js](test.js) is an attempt at reproducing the problem programmatically. It seems to produce results similar to manual attemps, though confidence is shaky.
 
-Yet using `npm start` and inspecting the resulting app reveals that the service worker never actually makes it to "production". It is also generated, but not requested by the app. The fact that it is created is what makes the test pass, obviating the fact that the test is insufficient...
+Manual test: using `npm start` and inspecting the resulting app reveals that the service worker never actually makes it to "production". It is generated, but not requested by the app.
+
+It seems the code that should request the service worker ends up in `.next/main.js` but not in `.next/static/runtime/main-xxxxxxxxxxxxxxxxx.js`, I'm guessing this is the problem.
 
 ## Help Wanted
 
-Obviously, the test I wrote poorly represents the actual results obtained. I'm looking for help making the test better represent production behaviour.
+I don't know about the Next.js internals enough to understand why this is happening... Any ideas out there?
 
 ----
 ## create-next-app notes
